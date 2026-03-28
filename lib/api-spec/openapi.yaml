@@ -1,22 +1,27 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Dzair Flights - Algeria Flight Booking API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: flights
+    description: Flight search and details
+  - name: bookings
+    description: Booking management
+  - name: airports
+    description: Airport information
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +29,187 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /airports:
+    get:
+      operationId: listAirports
+      tags: [airports]
+      summary: List all Algerian airports
+      responses:
+        "200":
+          description: List of airports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Airport"
+
+  /flights/search:
+    get:
+      operationId: searchFlights
+      tags: [flights]
+      summary: Search for available flights
+      parameters:
+        - name: origin
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Origin airport code
+        - name: destination
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Destination airport code
+        - name: departureDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Departure date (YYYY-MM-DD)
+        - name: returnDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Return date for round trips (YYYY-MM-DD)
+        - name: passengers
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+          description: Number of passengers
+        - name: tripType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [one-way, round-trip]
+            default: one-way
+      responses:
+        "200":
+          description: List of matching flights
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlightSearchResult"
+
+  /flights/{flightId}:
+    get:
+      operationId: getFlightById
+      tags: [flights]
+      summary: Get detailed flight information
+      parameters:
+        - name: flightId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Flight details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlightDetail"
+        "404":
+          description: Flight not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /bookings:
+    get:
+      operationId: listBookings
+      tags: [bookings]
+      summary: List all bookings
+      responses:
+        "200":
+          description: List of bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Booking"
+    post:
+      operationId: createBooking
+      tags: [bookings]
+      summary: Create a new booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBookingRequest"
+      responses:
+        "201":
+          description: Booking created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /bookings/{bookingId}:
+    get:
+      operationId: getBookingById
+      tags: [bookings]
+      summary: Get booking details
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Booking details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        "404":
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: cancelBooking
+      tags: [bookings]
+      summary: Cancel a booking
+      parameters:
+        - name: bookingId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Booking cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+        "404":
+          description: Booking not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +220,271 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+        - message
+
+    Airport:
+      type: object
+      properties:
+        code:
+          type: string
+          description: IATA airport code
+        name:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        country:
+          type: string
+      required:
+        - code
+        - name
+        - city
+        - region
+        - country
+
+    Flight:
+      type: object
+      properties:
+        id:
+          type: string
+        flightNumber:
+          type: string
+        airline:
+          type: string
+        airlineCode:
+          type: string
+        airlineLogo:
+          type: string
+        origin:
+          type: string
+        destination:
+          type: string
+        originCity:
+          type: string
+        destinationCity:
+          type: string
+        departureTime:
+          type: string
+        arrivalTime:
+          type: string
+        duration:
+          type: string
+        stops:
+          type: integer
+        stopDetails:
+          type: array
+          items:
+            type: string
+        aircraft:
+          type: string
+        priceEconomy:
+          type: number
+        priceBusiness:
+          type: number
+        seatsAvailableEconomy:
+          type: integer
+        seatsAvailableBusiness:
+          type: integer
+        amenities:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [on-time, delayed, cancelled]
+      required:
+        - id
+        - flightNumber
+        - airline
+        - airlineCode
+        - origin
+        - destination
+        - originCity
+        - destinationCity
+        - departureTime
+        - arrivalTime
+        - duration
+        - stops
+        - aircraft
+        - priceEconomy
+        - priceBusiness
+        - seatsAvailableEconomy
+        - seatsAvailableBusiness
+        - status
+
+    FlightDetail:
+      allOf:
+        - $ref: "#/components/schemas/Flight"
+        - type: object
+          properties:
+            seats:
+              type: array
+              items:
+                $ref: "#/components/schemas/Seat"
+
+    Seat:
+      type: object
+      properties:
+        seatNumber:
+          type: string
+        class:
+          type: string
+          enum: [economy, business]
+        available:
+          type: boolean
+        type:
+          type: string
+          enum: [window, middle, aisle]
+        extraLegroom:
+          type: boolean
+      required:
+        - seatNumber
+        - class
+        - available
+        - type
+        - extraLegroom
+
+    FlightSearchResult:
+      type: object
+      properties:
+        outbound:
+          type: array
+          items:
+            $ref: "#/components/schemas/Flight"
+        return:
+          type: array
+          items:
+            $ref: "#/components/schemas/Flight"
+        searchParams:
+          type: object
+          properties:
+            origin:
+              type: string
+            destination:
+              type: string
+            departureDate:
+              type: string
+            returnDate:
+              type: string
+            passengers:
+              type: integer
+            tripType:
+              type: string
+          required:
+            - origin
+            - destination
+            - departureDate
+            - passengers
+            - tripType
+      required:
+        - outbound
+        - searchParams
+
+    Passenger:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+        nationality:
+          type: string
+        passportNumber:
+          type: string
+        gender:
+          type: string
+          enum: [male, female]
+        seatNumber:
+          type: string
+      required:
+        - firstName
+        - lastName
+        - nationality
+        - gender
+
+    CreateBookingRequest:
+      type: object
+      properties:
+        flightId:
+          type: string
+        returnFlightId:
+          type: string
+        cabinClass:
+          type: string
+          enum: [economy, business]
+        passengers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Passenger"
+        contactEmail:
+          type: string
+          format: email
+        contactPhone:
+          type: string
+        totalAmount:
+          type: number
+      required:
+        - flightId
+        - cabinClass
+        - passengers
+        - contactEmail
+        - contactPhone
+        - totalAmount
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: string
+        bookingReference:
+          type: string
+        flightId:
+          type: string
+        returnFlightId:
+          type: string
+        flight:
+          $ref: "#/components/schemas/Flight"
+        returnFlight:
+          $ref: "#/components/schemas/Flight"
+        cabinClass:
+          type: string
+          enum: [economy, business]
+        passengers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Passenger"
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
+        totalAmount:
+          type: number
+        status:
+          type: string
+          enum: [confirmed, cancelled, pending]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - bookingReference
+        - flightId
+        - cabinClass
+        - passengers
+        - contactEmail
+        - contactPhone
+        - totalAmount
+        - status
+        - createdAt

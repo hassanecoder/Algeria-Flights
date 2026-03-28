@@ -1,0 +1,19 @@
+packages:
+  "framer-motion": "For smooth page transitions and interactive element animations"
+  "date-fns": "For elegant and easy date formatting across flight displays"
+  "react-hook-form": "For complex booking and passenger data form state management"
+  "@hookform/resolvers": "For Zod validation integration with react-hook-form"
+  "clsx": "For conditional tailwind class merging"
+  "tailwind-merge": "For robust tailwind class merging in UI components"
+
+images:
+  - path: "artifacts/flights-dz/public/images/hero-algeria.png"
+    description: "Breathtaking aerial photorealistic view of Algiers Mediterranean coastline, bright deep blue water, white colonial architecture, warm golden hour sunlight, suitable for a premium travel website hero banner"
+    aspect_ratio: "16:9"
+  - path: "artifacts/flights-dz/public/images/dzair-logo.png"
+    description: "Minimalist elegant airline logo featuring a geometric stylized falcon or plane in deep Mediterranean blue and terracotta orange, transparent background, high-end corporate identity"
+    aspect_ratio: "1:1"
+
+notes:
+  - Expecting API to serve generated hooks from @workspace/api-client-react
+  - Forms use Zod for frontend validation that mirrors the OpenAPI schema

@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Dzair Flights"
+version = "1.0.0"
+id = "artifacts/flights-dz"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18149
+
+[services.development]
+run = "pnpm --filter @workspace/flights-dz run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/flights-dz", "run", "build" ]
+publicDir = "artifacts/flights-dz/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18149"
+BASE_PATH = "/"

@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+
+  /* Mediterranean / Warm Professional Palette */
+  --color-background: hsl(40 20% 98%);
+  --color-foreground: hsl(222 47% 11%);
+  
+  /* Deep Mediterranean Blue */
+  --color-primary: hsl(215 80% 30%);
+  --color-primary-foreground: hsl(210 40% 98%);
+  
+  /* Soft Sand/Pearl for secondary surfaces */
+  --color-secondary: hsl(35 30% 92%);
+  --color-secondary-foreground: hsl(222 47% 11%);
+  
+  /* Terracotta / Sunset Orange accent */
+  --color-accent: hsl(20 80% 55%);
+  --color-accent-foreground: hsl(210 40% 98%);
+  
+  --color-muted: hsl(210 20% 94%);
+  --color-muted-foreground: hsl(215 16% 45%);
+  
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+  
+  --color-border: hsl(214 32% 88%);
+  --color-input: hsl(214 32% 88%);
+  --color-ring: hsl(215 80% 30%);
+
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222 47% 11%);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+:root {
+  --background: 40 20% 98%;
+  --foreground: 222 47% 11%;
+  
+  --primary: 215 80% 30%;
+  --primary-foreground: 210 40% 98%;
+  
+  --secondary: 35 30% 92%;
+  --secondary-foreground: 222 47% 11%;
+  
+  --accent: 20 80% 55%;
+  --accent-foreground: 210 40% 98%;
+  
+  --muted: 210 20% 94%;
+  --muted-foreground: 215 16% 45%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  
+  --border: 214 32% 88%;
+  --input: 214 32% 88%;
+  --ring: 215 80% 30%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --radius: 0.75rem;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased font-sans selection:bg-accent/20 selection:text-accent;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-semibold tracking-tight text-primary;
+  }
+}
+
+/* Custom Scrollbar for a more polished feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  @apply bg-white/80 backdrop-blur-xl border border-white shadow-xl shadow-primary/5;
+}
+
+.glass-card {
+  @apply bg-white/60 backdrop-blur-md border border-white/50 shadow-lg shadow-black/5;
+}
+
+/* Timeline dotted line for flight routes */
+.flight-timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, hsl(var(--border)) 50%, transparent 50%);
+  background-size: 8px 2px;
+  background-repeat: repeat-x;
+  transform: translateY(-50%);
+  z-index: 0;
+}
