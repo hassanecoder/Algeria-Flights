@@ -1,0 +1,21 @@
+{
+  "name": "Dzair Flights",
+  "short_name": "Dzair Flights",
+  "description": "Book cheap flights to and from Algeria. Compare airline prices, find the best deals on domestic and international flights. Dzair Flights — your Algerian flight search engine.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0C4A6E",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml"
+    }
+  ]
+}
