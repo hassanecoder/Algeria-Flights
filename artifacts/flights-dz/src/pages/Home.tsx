@@ -6,10 +6,10 @@ import { ShieldCheck, Clock, CreditCard, ChevronRight } from "lucide-react";
 
 export default function Home() {
   const popularDestinations = [
-    { city: "Algiers", code: "ALG", image: "https://images.unsplash.com/photo-1621640986064-db0937a6a438?w=800&q=80", price: "4,500" },
-    { city: "Oran", code: "ORN", image: "https://images.unsplash.com/photo-1616422285623-1493b8e5c25e?w=800&q=80", price: "5,200" },
-    { city: "Constantine", code: "CZL", image: "https://images.unsplash.com/photo-1596417772648-52219e26ec03?w=800&q=80", price: "4,800" },
-    { city: "Tlemcen", code: "TLM", image: "https://images.unsplash.com/photo-1579294576135-231aef71a25d?w=800&q=80", price: "6,100" },
+    { city: "Algiers", code: "ALG", image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80", price: "4,500" },
+    { city: "Oran", code: "ORN", image: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&q=80", price: "5,200" },
+    { city: "Constantine", code: "CZL", image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80", price: "4,800" },
+    { city: "Tlemcen", code: "TLM", image: "https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=800&q=80", price: "6,100" },
   ];
 
   return (
